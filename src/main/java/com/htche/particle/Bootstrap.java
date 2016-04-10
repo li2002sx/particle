@@ -1,7 +1,12 @@
 package com.htche.particle;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.Properties;
 
 /**
  * @Title: Bootstrap
@@ -13,7 +18,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class Bootstrap {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(Bootstrap.class, args);
     }
 }

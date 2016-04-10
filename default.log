@@ -1,0 +1,56 @@
+2016-04-10 21:50:26.294  INFO 11875 --- [main] com.htche.particle.Bootstrap             : Starting Bootstrap on applematoMacBook-Pro.local with PID 11875 (/Users/xiaoliguo/Desktop/dev/analyzer/particle/target/classes started by jankie in /Users/xiaoliguo/Desktop/dev/analyzer/particle)
+2016-04-10 21:50:26.300  INFO 11875 --- [main] com.htche.particle.Bootstrap             : No active profile set, falling back to default profiles: default
+2016-04-10 21:50:26.542  INFO 11875 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@69e153c5: startup date [Sun Apr 10 21:50:26 CST 2016]; root of context hierarchy
+2016-04-10 21:50:29.017  INFO 11875 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8080 (http)
+2016-04-10 21:50:29.057  INFO 11875 --- [main] o.apache.catalina.core.StandardService   : Starting service Tomcat
+2016-04-10 21:50:29.059  INFO 11875 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.0.32
+2016-04-10 21:50:29.411  INFO 11875 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2016-04-10 21:50:29.411  INFO 11875 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2874 ms
+2016-04-10 21:50:29.819  INFO 11875 --- [localhost-startStop-1] o.s.b.c.e.ServletRegistrationBean        : Mapping servlet: 'dispatcherServlet' to [/]
+2016-04-10 21:50:29.835  INFO 11875 --- [localhost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'characterEncodingFilter' to: [/*]
+2016-04-10 21:50:29.836  INFO 11875 --- [localhost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2016-04-10 21:50:29.836  INFO 11875 --- [localhost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2016-04-10 21:50:29.837  INFO 11875 --- [localhost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'requestContextFilter' to: [/*]
+2016-04-10 21:50:30.032  INFO 11875 --- [localhost-startStop-1] o.a.c.util.SessionIdGeneratorBase        : Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [135] milliseconds.
+2016-04-10 21:50:30.420  INFO 11875 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@69e153c5: startup date [Sun Apr 10 21:50:26 CST 2016]; root of context hierarchy
+2016-04-10 21:50:30.550  INFO 11875 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/particle]}" onto public org.springframework.web.servlet.ModelAndView com.htche.particle.controller.ParticleController.particle(java.lang.String)
+2016-04-10 21:50:30.551  INFO 11875 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/addExtDics]}" onto public com.htche.particle.model.InvokeResult com.htche.particle.controller.ParticleController.addExtDics(java.lang.String)
+2016-04-10 21:50:30.553  INFO 11875 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2016-04-10 21:50:30.553  INFO 11875 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-04-10 21:50:30.588  INFO 11875 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-04-10 21:50:30.588  INFO 11875 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-04-10 21:50:30.638  INFO 11875 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-04-10 21:50:30.881  INFO 11875 --- [main] o.s.w.s.v.velocity.VelocityConfigurer    : ClasspathResourceLoader with name 'springMacro' added to configured VelocityEngine
+2016-04-10 21:50:31.246  INFO 11875 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2016-04-10 21:50:31.434  INFO 11875 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2016-04-10 21:50:31.441  INFO 11875 --- [main] com.htche.particle.Bootstrap             : Started Bootstrap in 6.519 seconds (JVM running for 7.594)
+2016-04-10 21:50:34.765  INFO 11875 --- [Thread-2] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@69e153c5: startup date [Sun Apr 10 21:50:26 CST 2016]; root of context hierarchy
+2016-04-10 21:50:34.777  INFO 11875 --- [Thread-2] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2016-04-10 21:50:39.056  INFO 11881 --- [main] com.htche.particle.Bootstrap             : Starting Bootstrap on applematoMacBook-Pro.local with PID 11881 (/Users/xiaoliguo/Desktop/dev/analyzer/particle/target/classes started by jankie in /Users/xiaoliguo/Desktop/dev/analyzer/particle)
+2016-04-10 21:50:39.064  INFO 11881 --- [main] com.htche.particle.Bootstrap             : No active profile set, falling back to default profiles: default
+2016-04-10 21:50:39.210  INFO 11881 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@6a370f4: startup date [Sun Apr 10 21:50:39 CST 2016]; root of context hierarchy
+2016-04-10 21:50:40.899  INFO 11881 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8081 (http)
+2016-04-10 21:50:40.920  INFO 11881 --- [main] o.apache.catalina.core.StandardService   : Starting service Tomcat
+2016-04-10 21:50:40.921  INFO 11881 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.0.32
+2016-04-10 21:50:41.059  INFO 11881 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2016-04-10 21:50:41.059  INFO 11881 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1855 ms
+2016-04-10 21:50:41.411  INFO 11881 --- [localhost-startStop-1] o.s.b.c.e.ServletRegistrationBean        : Mapping servlet: 'dispatcherServlet' to [/]
+2016-04-10 21:50:41.417  INFO 11881 --- [localhost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'characterEncodingFilter' to: [/*]
+2016-04-10 21:50:41.418  INFO 11881 --- [localhost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2016-04-10 21:50:41.418  INFO 11881 --- [localhost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2016-04-10 21:50:41.418  INFO 11881 --- [localhost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'requestContextFilter' to: [/*]
+2016-04-10 21:50:41.784  INFO 11881 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@6a370f4: startup date [Sun Apr 10 21:50:39 CST 2016]; root of context hierarchy
+2016-04-10 21:50:41.862  INFO 11881 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/particle]}" onto public org.springframework.web.servlet.ModelAndView com.htche.particle.controller.ParticleController.particle(java.lang.String)
+2016-04-10 21:50:41.864  INFO 11881 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/addExtDics]}" onto public com.htche.particle.model.InvokeResult com.htche.particle.controller.ParticleController.addExtDics(java.lang.String)
+2016-04-10 21:50:41.866  INFO 11881 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2016-04-10 21:50:41.867  INFO 11881 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-04-10 21:50:41.901  INFO 11881 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-04-10 21:50:41.902  INFO 11881 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-04-10 21:50:41.946  INFO 11881 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-04-10 21:50:42.101  INFO 11881 --- [main] o.s.w.s.v.velocity.VelocityConfigurer    : ClasspathResourceLoader with name 'springMacro' added to configured VelocityEngine
+2016-04-10 21:50:42.390  INFO 11881 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2016-04-10 21:50:42.489  INFO 11881 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8081 (http)
+2016-04-10 21:50:42.496  INFO 11881 --- [main] com.htche.particle.Bootstrap             : Started Bootstrap in 4.016 seconds (JVM running for 4.579)
+2016-04-10 21:51:02.543  INFO 11881 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2016-04-10 21:51:02.556  INFO 11881 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2016-04-10 21:51:02.601  INFO 11881 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 45 ms

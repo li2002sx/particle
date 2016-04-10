@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<body>
+	<span>主模板:</span>
+	$screen_content
+</body>
+
+</html>
