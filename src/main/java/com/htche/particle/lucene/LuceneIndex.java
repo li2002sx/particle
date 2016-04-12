@@ -1,4 +1,4 @@
-package com.htche.particle.controller.lucene;
+package com.htche.particle.lucene;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -20,16 +20,14 @@ public class LuceneIndex {
 
     public static void indexPost(String id, String name) {
         File indexDir = new File("/Users/xiaoliguo/Desktop/lucene-test/index");
-
         Analyzer analyzer = new IKAnalyzer();
-
         TextField postIdField = new TextField("id", id, Field.Store.YES);  // 不要用StringField
         TextField postContentField = new TextField("content", name, Field.Store.YES);
 
         Document doc = new Document();
         doc.add(postIdField);
         doc.add(postContentField);
-        IndexWriterConfig iwConfig = new IndexWriterConfig(Version.LUCENE_4_10_1, analyzer);
+        IndexWriterConfig iwConfig = new IndexWriterConfig(Version.LUCENE_4_10_4, analyzer);
         iwConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
         try {
             Directory fsDirectory = FSDirectory.open(indexDir);

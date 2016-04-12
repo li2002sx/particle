@@ -1,13 +1,14 @@
 package com.htche.particle.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.htche.particle.controller.lucene.LuceneIndex;
 import com.htche.particle.facade.CarFacade;
+import com.htche.particle.lucene.LuceneIndex;
 import com.htche.particle.model.CarInfo;
 import com.htche.particle.model.CarModel;
 import com.htche.particle.model.InvokeResult;
 import com.htche.particle.model.ParticleResult;
 import com.htche.particle.solr.CarModelRepository;
+import com.htche.particle.util.AnalyzerHelper;
 import com.htche.particle.util.FileHelper;
 import com.htche.particle.util.HttpHelper;
 import org.apache.lucene.analysis.Analyzer;
@@ -53,52 +54,32 @@ public class ParticleController {
     @Autowired
     CarFacade carFacade;
 
-    @Autowired
-    private CarModelRepository repository;
-
-    private final String _CARMODELURL = "http://www.topcars.cn/interface/index.php?c=tesst&m=all_models";
-
     @RequestMapping("particle")
     public ModelAndView particle(String ugc) {
-
-//        String carModelJson = HttpHelper.HttpRequest(_CARMODELURL);
-//        List<CarModel> carModels = JSON.parseArray(carModelJson, CarModel.class);
-//        for (CarModel model : carModels) {
-//            this.repository.save(model);
-//            LuceneIndex.indexPost(model.getId(),model.getName());
-//            System.out.println(String.format("%s---%s", model.getId(), model.getName()));
-//        }
-
-        // fetch a single product
-//        System.out.println("CarModel found with findByNameStartingWith('加版'):");
-//        System.out.println("--------------------------------");
-//        for (CarModel model : this.repository.findByNameStartingWith("加版")) {
-//            System.out.println(String.format("%s---%s",model.getId(),model.getName()));
-//        }
 
         Analyzer analyzer = new IKAnalyzer();
         File indexDir = new File("/Users/xiaoliguo/Desktop/lucene-test/index");
         try {
             Directory fsDirectory = FSDirectory.open(indexDir);
-            DirectoryReader ireader = DirectoryReader.open(fsDirectory);
-            IndexSearcher isearcher = new IndexSearcher(ireader);
+            DirectoryReader indexReader = DirectoryReader.open(fsDirectory);
+            IndexSearcher indexSearcher  = new IndexSearcher(indexReader);
 
+            String input = "16款阿尔法、柴油（卡宴、行政、揽运）、450、汽油行政中规761+17.5、现车";
+            String result = AnalyzerHelper.displayTokens(AnalyzerHelper.convertSynonym(AnalyzerHelper.analyzeChinese(input, true)));
 
-            QueryParser qp = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
-            qp.setDefaultOperator(QueryParser.AND_OPERATOR);
-            Query query = qp.parse("卡宴");     // 搜索Lucene
-            TopDocs topDocs = isearcher.search(query, 5);      //搜索相似度最高的5条记录
+            QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
+            queryParser.setDefaultOperator(QueryParser.OR_OPERATOR);
+            Query query = queryParser.parse(result);     // 搜索Lucene
+            TopDocs topDocs = indexSearcher.search(query, 5);      //搜索相似度最高的5条记录
             System.out.println("命中:" + topDocs.totalHits);
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
             for (int i = 0; i < topDocs.totalHits; i++) {
-                Document targetDoc = isearcher.doc(scoreDocs[i].doc);
+                Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
                 System.out.println("内容:" + targetDoc.toString());
             }
-
         } catch (Exception e) {
 
         }
-
 
         ModelAndView model = new ModelAndView("custom/particle");
         model.addObject("ugc", ugc);
