@@ -1,0 +1,34 @@
+#set($layout = 'layout/default.vm')
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Analyzer</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Basic Form Elements
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form id="ugc_form" method="post">
+                                <div class="form-group">
+                                    <label>车源信息</label>
+                                    <textarea class="form-control" name="ugc" rows="5">$!ugc</textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Submit Button</button>
+                                <button type="reset" class="btn btn-info" id="btn_reset_ugc">Reset Button</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

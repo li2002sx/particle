@@ -64,11 +64,11 @@ public class ParticleController {
             DirectoryReader indexReader = DirectoryReader.open(fsDirectory);
             IndexSearcher indexSearcher  = new IndexSearcher(indexReader);
 
-            String input = "16款阿尔法、柴油（卡宴、行政、揽运）、450、汽油行政中规761+17.5、现车";
+            String input = "5.[微笑]欧规揽胜柴油16款 VOGUE，白/黑，3437#";
             String result = AnalyzerHelper.displayTokens(AnalyzerHelper.convertSynonym(AnalyzerHelper.analyzeChinese(input, true)));
 
             QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
-            queryParser.setDefaultOperator(QueryParser.OR_OPERATOR);
+//            queryParser.setDefaultOperator(QueryParser.AND_OPERATOR);
             Query query = queryParser.parse(result);     // 搜索Lucene
             TopDocs topDocs = indexSearcher.search(query, 5);      //搜索相似度最高的5条记录
             System.out.println("命中:" + topDocs.totalHits);
