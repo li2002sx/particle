@@ -1,0 +1,86 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Analyzer</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Basic Form Elements
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form id="form" method="post">
+                                <div class="form-group">
+                                    <label>车源信息</label>
+                                    <textarea class="form-control" name="input" rows="8">$!input</textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">分析</button>
+                                <button type="reset" class="btn btn-info" id="btn_reset">重置</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Basic Form Elements
+                </div>
+                #foreach($item in $analyzers)
+                    <div class="panel-body">
+                       <div class="row">
+                            <div class="col-lg-12">
+                                <div class="alert alert-success">
+                                    $!item.keywords
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        分析结果
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>序号</th>
+                                                        <th>DOM</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                #set($i=1)
+                                                #foreach($result in $item.results)
+                                                    <tr>
+                                                        <td>$i</td>
+                                                        <td>$result</td>
+                                                    </tr>
+                                                    #set($i=$i+1)
+                                                #end
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.table-responsive -->
+                                    </div>
+                                    <!-- /.panel-body -->
+                                </div>
+                                <!-- /.panel -->
+                            </div>
+                        </div>
+                    </div>
+                #end
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Custom JS -->
+#set($jsUrls=["js/custom/analyzertest.js"])

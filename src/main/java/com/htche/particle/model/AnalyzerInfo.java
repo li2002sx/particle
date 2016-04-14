@@ -18,5 +18,9 @@ public class AnalyzerInfo {
 
     private String mobile;
 
+    private Integer status;
+
+    private String carFrame;
+
     private String city;
 }

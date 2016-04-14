@@ -141,24 +141,24 @@ public class ParticleController {
         return model;
     }
 
-    @RequestMapping("addExtDics")
-    public
-    @ResponseBody
-    InvokeResult addExtDics(String terms) {
-        InvokeResult result = new InvokeResult();
-        try {
-            if (terms != null && !terms.isEmpty()) {
-                String[] termArr = terms.split("\\n");
-                List<String> termList = Arrays.asList(termArr);
-                String path = this.getClass().getClassLoader().getResource("ext.dic").getPath();
-                FileHelper.fileOutputStream(path, termList);
-                result.setSuccess(true);
-            }
-        } catch (IOException ex) {
-            result.setError(ex.getMessage());
-            throw new RuntimeException(ex);
-        }
-
-        return result;
-    }
+//    @RequestMapping("addExtDics")
+//    public
+//    @ResponseBody
+//    InvokeResult addExtDics(String terms) {
+//        InvokeResult result = new InvokeResult();
+//        try {
+//            if (terms != null && !terms.isEmpty()) {
+//                String[] termArr = terms.split("\\n");
+//                List<String> termList = Arrays.asList(termArr);
+//                String path = this.getClass().getClassLoader().getResource("ext.dic").getPath();
+//                FileHelper.fileOutputStream(path, termList);
+//                result.setSuccess(true);
+//            }
+//        } catch (IOException ex) {
+//            result.setError(ex.getMessage());
+//            throw new RuntimeException(ex);
+//        }
+//
+//        return result;
+//    }
 }

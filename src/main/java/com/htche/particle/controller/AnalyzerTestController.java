@@ -1,6 +1,7 @@
 package com.htche.particle.controller;
 
 import com.htche.particle.model.AnalyzerInfo;
+import com.htche.particle.model.AnalyzerTestInfo;
 import com.htche.particle.util.AnalyzerHelper;
 import com.htche.particle.util.StringHelper;
 import org.apache.lucene.analysis.Analyzer;
@@ -20,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.File;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,21 +36,21 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/")
-public class AnalyzerController {
+public class AnalyzerTestController {
 
     private final String _INDEXPATH = "/Users/xiaoliguo/Desktop/lucene-test/index";
 
     private final Integer _SUBCOUNT = 15;
 
-    private final Integer _QUERYCOUNT = 1;
+    private final Integer _QUERYCOUNT = 5;
 
-    @RequestMapping("analyzer")
+    @RequestMapping("analyzertest")
     public ModelAndView analyzer(String input) {
 
-        ModelAndView model = new ModelAndView("custom/analyzer");
+        ModelAndView model = new ModelAndView("custom/analyzertest");
         model.addObject("input", input);
 
-        List<AnalyzerInfo> analyzerInfos = new ArrayList<AnalyzerInfo>();
+        List<AnalyzerTestInfo> analyzerInfos = new ArrayList<AnalyzerTestInfo>();
 
         if (input != null && !input.isEmpty()) {
 //            input = input.replaceAll(" +","");
@@ -63,6 +66,7 @@ public class AnalyzerController {
                 String[] inputArr = input.split("\\r\\n");
                 for (String item : inputArr) {
                     if (item != null && !item.isEmpty()&&item.contains("款")) {
+                        AnalyzerTestInfo analyzerTestInfo = new AnalyzerTestInfo();
                         item = item.trim();
                         if (StringHelper.hasChineseCharacters(item)) {
                             String keywords = item.substring(0, item.length() > _SUBCOUNT ? _SUBCOUNT : item.length());
@@ -71,39 +75,23 @@ public class AnalyzerController {
                             String result = AnalyzerHelper.displayTokens(tokenStream);
 
                             QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
-//            queryParser.setDefaultOperator(QueryParser.AND_OPERATOR);
+//                          queryParser.setDefaultOperator(QueryParser.AND_OPERATOR);
                             Query query = queryParser.parse(result);     // 搜索Lucene
+                            analyzerTestInfo.setKeywords(result);
                             TopDocs topDocs = indexSearcher.search(query, _QUERYCOUNT);      //搜索相似度最高的5条记录
-                            System.out.println("命中:" + topDocs.totalHits);
+//                            System.out.println("命中:" + topDocs.totalHits);
+                            analyzerTestInfo.setTotalHits(topDocs.totalHits);
                             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                             int hits = topDocs.totalHits;
                             if (hits > _QUERYCOUNT) hits = _QUERYCOUNT;
-
-                            //匹配手机
-                            String mobile = StringHelper.getMobile(item);
-                            if (mobile.isEmpty()) mobile = globalMobile;
-
-                            //匹配价格
-                            String price = StringHelper.getPrice(item);
-
-                            //匹配状态
-                            Integer status = StringHelper.getCarStatus(item);
-
-                            //匹配车架号
-                            String carFrame = StringHelper.getCarFrame(item);
-
+                            List<String> results = new ArrayList<>();
                             for (int i = 0; i < hits; i++) {
-                                AnalyzerInfo analyzerInfo = new AnalyzerInfo();
                                 Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
-                                analyzerInfo.setCarTypeId(targetDoc.get("id"));
-                                analyzerInfo.setCarType(targetDoc.get("content"));
-                                analyzerInfo.setMobile(mobile);
-                                analyzerInfo.setPrice(price);
-                                analyzerInfo.setStatus(status);
-                                analyzerInfo.setCarFrame(carFrame);
-                                analyzerInfos.add(analyzerInfo);
+                                results.add(URLDecoder.decode(targetDoc.toString(), "UTF-8"));
                                 System.out.println("内容:" + targetDoc.toString());
                             }
+                            analyzerTestInfo.setResults(results);
+                            analyzerInfos.add(analyzerTestInfo);
                         }
                     }
                 }

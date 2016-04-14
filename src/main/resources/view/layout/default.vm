@@ -47,11 +47,15 @@
                             <a href="/analyzer">车源分析</a>
                         </li>
                         <li>
-                            <a href="/particle">粒子分析</a>
+                            <a href="/synonyms">同义词</a>
                         </li>
                         <li>
-                            <a href="/particle">基础设置</a>
+                            <a href="/extdict">扩展词</a>
                         </li>
+                        <li>
+                            <a href="/analyzertest">粒子分析</a>
+                        </li>
+
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
