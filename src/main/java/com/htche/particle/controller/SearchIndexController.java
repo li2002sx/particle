@@ -1,17 +1,26 @@
 package com.htche.particle.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.htche.particle.cache.CacheManager;
+import com.htche.particle.facade.CarFacade;
+import com.htche.particle.facade.CityFacade;
 import com.htche.particle.lucene.LuceneIndex;
 import com.htche.particle.model.CarModel;
+import com.htche.particle.model.CityInfo;
 import com.htche.particle.model.InvokeResult;
 import com.htche.particle.solr.CarModelRepository;
+import com.htche.particle.util.AppConfigHelper;
 import com.htche.particle.util.HttpHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Title: SearchIndexController
@@ -25,9 +34,14 @@ import java.util.List;
 @RequestMapping("/")
 public class SearchIndexController {
 
+    private final String _INDEXPATH = AppConfigHelper.nodeMap.get("index_path");
+
     @Autowired
     private CarModelRepository repository;
-    private final String _CARMODELURL = "http://www.topcars.cn/interface/index.php?c=tesst&m=all_models";
+    @Autowired
+    private CityFacade cityFacade;
+
+    private final String _CARMODELURL = String.format("%s%s",AppConfigHelper.nodeMap.get("url"),AppConfigHelper.nodeMap.get("car_url"));
 
     @RequestMapping("createIndex")
     public
@@ -53,7 +67,24 @@ public class SearchIndexController {
             result.setError(ex.getMessage());
             throw new RuntimeException(ex);
         }
+        return result;
+    }
 
+    @RequestMapping("city")
+    public
+    @ResponseBody
+    InvokeResult city() {
+        InvokeResult result = new InvokeResult();
+        try {
+            List<CityInfo> cityInfos = cityFacade.getCities();
+            for (CityInfo cityInfo : cityInfos) {
+                System.out.println(cityInfo.getCityName());
+            }
+            result.setSuccess(true);
+        } catch (Exception ex) {
+            result.setError(ex.getMessage());
+            throw new RuntimeException(ex);
+        }
         return result;
     }
 }

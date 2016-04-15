@@ -62,11 +62,21 @@ public class StringHelper {
         return str;
     }
 
+    public static boolean regPass(String input, String reg) {
+
+        Pattern p = Pattern.compile(reg);
+        Matcher m = p.matcher(input);
+        return m.matches();
+    }
+
     public static Integer getCarStatus(String input) {
         int status = 0;
-        if (input.contains("现车") || input.contains("现货")) {
+        if (input.contains("现车") || input.contains("现货")
+                || input.contains("手续齐") || input.contains("当天开票")
+                || input.contains("当天票") || input.contains("手续齐全")) {
             return 1;
-        } else if (input.contains("打放税")) {
+        } else if (input.contains("打放税") || input.contains("马上齐")
+                || input.contains("到港")||regPass(input, "7个工作日")) {
             return 2;
         } else if (input.contains("期货")) {
             return 3;
@@ -76,7 +86,7 @@ public class StringHelper {
 
     public static String getCarFrame(String input) {
         String str = "";
-        Pattern p = Pattern.compile("#?\\d{4}");
+        Pattern p = Pattern.compile("#?\\d{4}#?");
         Matcher m = p.matcher(input);
         if (m.find()) {
             str = m.group().trim();

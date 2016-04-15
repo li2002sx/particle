@@ -9,6 +9,7 @@ import com.htche.particle.model.InvokeResult;
 import com.htche.particle.model.ParticleResult;
 import com.htche.particle.solr.CarModelRepository;
 import com.htche.particle.util.AnalyzerHelper;
+import com.htche.particle.util.AppConfigHelper;
 import com.htche.particle.util.FileHelper;
 import com.htche.particle.util.HttpHelper;
 import org.apache.lucene.analysis.Analyzer;
@@ -51,6 +52,8 @@ import java.util.List;
 @RequestMapping("/")
 public class ParticleController {
 
+    private final String _INDEXPATH = AppConfigHelper.nodeMap.get("index_path");
+
     @Autowired
     CarFacade carFacade;
 
@@ -58,7 +61,7 @@ public class ParticleController {
     public ModelAndView particle(String ugc) {
 
         Analyzer analyzer = new IKAnalyzer();
-        File indexDir = new File("/Users/xiaoliguo/Desktop/lucene-test/index");
+        File indexDir = new File(_INDEXPATH);
         try {
             Directory fsDirectory = FSDirectory.open(indexDir);
             DirectoryReader indexReader = DirectoryReader.open(fsDirectory);

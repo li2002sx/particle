@@ -3,6 +3,7 @@ package com.htche.particle.controller;
 import com.htche.particle.model.AnalyzerInfo;
 import com.htche.particle.model.AnalyzerTestInfo;
 import com.htche.particle.util.AnalyzerHelper;
+import com.htche.particle.util.AppConfigHelper;
 import com.htche.particle.util.StringHelper;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -38,7 +39,7 @@ import java.util.List;
 @RequestMapping("/")
 public class AnalyzerTestController {
 
-    private final String _INDEXPATH = "/Users/xiaoliguo/Desktop/lucene-test/index";
+    private final String _INDEXPATH = AppConfigHelper.nodeMap.get("index_path");
 
     private final Integer _SUBCOUNT = 15;
 
@@ -84,7 +85,7 @@ public class AnalyzerTestController {
                             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                             int hits = topDocs.totalHits;
                             if (hits > _QUERYCOUNT) hits = _QUERYCOUNT;
-                            List<String> results = new ArrayList<>();
+                            List<String> results = new ArrayList<String>();
                             for (int i = 0; i < hits; i++) {
                                 Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
                                 String html = targetDoc.toString();

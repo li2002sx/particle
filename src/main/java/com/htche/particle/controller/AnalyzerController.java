@@ -1,7 +1,11 @@
 package com.htche.particle.controller;
 
+import com.google.common.base.Strings;
+import com.htche.particle.facade.CityFacade;
 import com.htche.particle.model.AnalyzerInfo;
+import com.htche.particle.model.CityInfo;
 import com.htche.particle.util.AnalyzerHelper;
+import com.htche.particle.util.AppConfigHelper;
 import com.htche.particle.util.StringHelper;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -14,6 +18,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,17 +40,22 @@ import java.util.List;
 @RequestMapping("/")
 public class AnalyzerController {
 
-    private final String _INDEXPATH = "/Users/xiaoliguo/Desktop/lucene-test/index";
+    private final String _INDEXPATH = AppConfigHelper.nodeMap.get("index_path");
 
     private final Integer _SUBCOUNT = 15;
 
     private final Integer _QUERYCOUNT = 1;
+
+    @Autowired
+    CityFacade cityFacade;
 
     @RequestMapping("analyzer")
     public ModelAndView analyzer(String input) {
 
         ModelAndView model = new ModelAndView("custom/analyzer");
         model.addObject("input", input);
+
+        List<CityInfo> cityInfos = cityFacade.getCities();
 
         List<AnalyzerInfo> analyzerInfos = new ArrayList<AnalyzerInfo>();
 
@@ -62,7 +72,7 @@ public class AnalyzerController {
                 //分析输入一共有多少行
                 String[] inputArr = input.split("\\r\\n");
                 for (String item : inputArr) {
-                    if (item != null && !item.isEmpty()&&item.contains("款")) {
+                    if (item != null && !item.isEmpty() && item.contains("款")) {
                         item = item.trim();
                         if (StringHelper.hasChineseCharacters(item)) {
                             String keywords = item.substring(0, item.length() > _SUBCOUNT ? _SUBCOUNT : item.length());
@@ -92,6 +102,18 @@ public class AnalyzerController {
                             //匹配车架号
                             String carFrame = StringHelper.getCarFrame(item);
 
+                            //匹配城市
+                            CityInfo cityInfo = new CityInfo();
+                            for (CityInfo city : cityInfos) {
+                                String cityName = city.getCityName();
+                                if (!Strings.isNullOrEmpty(cityName)) {
+                                    if (item.indexOf(cityName) > -1) {
+                                        cityInfo = city;
+                                        break;
+                                    }
+                                }
+                            }
+
                             for (int i = 0; i < hits; i++) {
                                 AnalyzerInfo analyzerInfo = new AnalyzerInfo();
                                 Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
@@ -101,6 +123,7 @@ public class AnalyzerController {
                                 analyzerInfo.setPrice(price);
                                 analyzerInfo.setStatus(status);
                                 analyzerInfo.setCarFrame(carFrame);
+                                analyzerInfo.setCity(cityInfo);
                                 analyzerInfos.add(analyzerInfo);
                                 System.out.println("内容:" + targetDoc.toString());
                             }

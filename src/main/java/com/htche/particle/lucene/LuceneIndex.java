@@ -1,5 +1,6 @@
 package com.htche.particle.lucene;
 
+import com.htche.particle.util.AppConfigHelper;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -19,7 +20,7 @@ import java.io.File;
 public class LuceneIndex {
 
     public static void indexPost(String id, String name) {
-        File indexDir = new File("/Users/xiaoliguo/Desktop/lucene-test/index");
+        File indexDir = new File(AppConfigHelper.nodeMap.get("index_path"));
         Analyzer analyzer = new IKAnalyzer();
         TextField postIdField = new TextField("id", id, Field.Store.YES);  // 不要用StringField
         TextField postContentField = new TextField("content", name, Field.Store.YES);

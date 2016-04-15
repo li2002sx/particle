@@ -87,7 +87,7 @@
                                                         </select>
                                                     </td>
                                                     <td>$!item.carFrame</td>
-                                                    <td>$!item.city</td>
+                                                    <td>$!item.city.cityName</td>
                                                 </tr>
                                                 #set($i=$i+1)
                                             #end

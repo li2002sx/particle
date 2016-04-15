@@ -9,12 +9,13 @@ import java.util.Map;
 
 public class AppConfigHelper {
 
-    private final String _APPPATH = "config/app.conf";
-    public static Map<String, String> nodeMap = new HashMap<>();
+//    private String _APPPATH = this.getClass().getClassLoader().getResource("config/app.conf").getPath();
+    public static Map<String, String> nodeMap = null;
 
-    public AppConfigHelper() {
+    static {
+        nodeMap = new HashMap<String, String>();
         try {
-            String path = this.getClass().getClassLoader().getResource(_APPPATH).getPath();
+            String path = Thread.currentThread().getContextClassLoader().getResource("config/app.conf").getPath();
             Document doc = XmlHelper.loadDocument(path);
             Element root = doc.getDocumentElement();
             List<Element> elements = XmlHelper.getChildElements(root, "add");

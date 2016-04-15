@@ -47,7 +47,7 @@ public final class XmlHelper {
 
     public static List<Element> getChildElements(Element elem, String name) {
         NodeList nodes = elem.getElementsByTagName(name);
-        List<Element> elements = new ArrayList<>(nodes.getLength());
+        List<Element> elements = new ArrayList<Element>(nodes.getLength());
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(name)) {

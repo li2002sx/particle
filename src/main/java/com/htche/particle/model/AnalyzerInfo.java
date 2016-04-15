@@ -22,5 +22,5 @@ public class AnalyzerInfo {
 
     private String carFrame;
 
-    private String city;
+    private CityInfo city;
 }
