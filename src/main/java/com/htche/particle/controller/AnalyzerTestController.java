@@ -87,7 +87,8 @@ public class AnalyzerTestController {
                             List<String> results = new ArrayList<>();
                             for (int i = 0; i < hits; i++) {
                                 Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
-                                results.add(URLDecoder.decode(targetDoc.toString(), "UTF-8"));
+                                String html = targetDoc.toString();
+                                results.add(StringHelper.html(html));
                                 System.out.println("内容:" + targetDoc.toString());
                             }
                             analyzerTestInfo.setResults(results);
