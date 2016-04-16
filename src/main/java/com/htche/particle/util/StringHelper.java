@@ -44,6 +44,7 @@ public class StringHelper {
 
     public static String getPrice(String input) {
 
+        input = input.replaceAll("(1[0-9])\\d{9}","").replaceAll("#?\\d{4}#?","");
         String str = "";
         Pattern p = Pattern.compile("[1-9]\\d{1,2}(\\.\\d{1})?");
         Matcher m = p.matcher(input);
@@ -66,7 +67,7 @@ public class StringHelper {
 
         Pattern p = Pattern.compile(reg);
         Matcher m = p.matcher(input);
-        return m.matches();
+        return m.find();
     }
 
     public static Integer getCarStatus(String input) {
@@ -76,9 +77,10 @@ public class StringHelper {
                 || input.contains("当天票") || input.contains("手续齐全")) {
             return 1;
         } else if (input.contains("打放税") || input.contains("马上齐")
-                || input.contains("到港")||regPass(input, "7个工作日")) {
+                || input.contains("到港")||regPass(input, "\\d{1,2}个工作日")) {
             return 2;
-        } else if (input.contains("期货")) {
+        } else if (input.contains("期货")||input.contains("在途")
+                ||input.contains("发船")||regPass(input, "\\d{1,2}月d{1,2}日")) {
             return 3;
         }
         return status;

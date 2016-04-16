@@ -66,7 +66,7 @@ public class AnalyzerTestController {
                 //分析输入一共有多少行
                 String[] inputArr = input.split("\\r\\n");
                 for (String item : inputArr) {
-                    if (item != null && !item.isEmpty()&&item.contains("款")) {
+                    if (item != null && !item.isEmpty() &&StringHelper.regPass(item, "1[5|6|7]款?[^\\d]")){
                         AnalyzerTestInfo analyzerTestInfo = new AnalyzerTestInfo();
                         item = item.trim();
                         if (StringHelper.hasChineseCharacters(item)) {
