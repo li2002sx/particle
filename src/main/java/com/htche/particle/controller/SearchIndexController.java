@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +35,6 @@ import java.util.Set;
 @RequestMapping("/")
 public class SearchIndexController {
 
-    private final String _INDEXPATH = AppConfigHelper.nodeMap.get("index_path");
 
     @Autowired
     private CarModelRepository repository;
@@ -49,6 +49,8 @@ public class SearchIndexController {
     InvokeResult createIndex() {
         InvokeResult result = new InvokeResult();
         try {
+            File indexDir = new File(AppConfigHelper.nodeMap.get("index_path"));
+            indexDir.delete();
             String carModelJson = HttpHelper.HttpRequest(_CARMODELURL);
             List<CarModel> carModels = JSON.parseArray(carModelJson, CarModel.class);
             for (CarModel model : carModels) {
