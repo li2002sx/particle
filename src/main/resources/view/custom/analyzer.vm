@@ -50,6 +50,7 @@
                                                     <th>序号</th>
                                                     <th>车型编号</th>
                                                     <th>车型</th>
+                                                    <th>规格</th>
                                                     <th>手机</th>
                                                     <th>价格</th>
                                                     <th>状态</th>
@@ -64,6 +65,7 @@
                                                     <td>$i</td>
                                                     <td>$item.carTypeId</td>
                                                     <td>$item.carType</td>
+                                                    <td>$item.specName</td>
                                                     <td>$item.mobile</td>
                                                     <td>$!item.price万</td>
                                                     <td>

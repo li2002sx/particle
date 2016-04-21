@@ -9,7 +9,7 @@ import com.htche.particle.lucene.LuceneIndex;
 import com.htche.particle.model.CarModel;
 import com.htche.particle.model.CityInfo;
 import com.htche.particle.model.InvokeResult;
-import com.htche.particle.solr.CarModelRepository;
+//import com.htche.particle.solr.CarModelRepository;
 import com.htche.particle.util.AppConfigHelper;
 import com.htche.particle.util.HttpHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,8 @@ import java.util.Set;
 public class SearchIndexController {
 
 
-    @Autowired
-    private CarModelRepository repository;
+//    @Autowired
+//    private CarModelRepository repository;
     @Autowired
     private CityFacade cityFacade;
 

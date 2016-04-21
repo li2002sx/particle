@@ -14,6 +14,10 @@ public class AnalyzerInfo {
 
     private String carType;
 
+    private Integer spec;
+
+    private String specName;
+
     private String price;
 
     private String mobile;

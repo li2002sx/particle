@@ -72,27 +72,32 @@ public class StringHelper {
 
     public static Integer getCarStatus(String input) {
         int status = 0;
-        if (regPass(input, "现[车|货]") || regPass(input, "当天(开)?票")
+        if (regPass(input, "现(车|货)") || regPass(input, "当天(开)?票")
                 || regPass(input, "手续齐(全)?") || regPass(input, "拆箱")) {
             return 1;
         } else if (input.contains("打放税") || input.contains("马上齐")
                 || input.contains("到港") || regPass(input, "\\d{1,2}个工作日")) {
             return 2;
         } else if (input.contains("期货") || input.contains("在途")
-                || input.contains("发船") || regPass(input, "\\d{1,2}月d{1,2}日")) {
+                || input.contains("发船") || regPass(input, "\\d{1,2}月d{1,2}日")
+                || input.contains("交车")) {
             return 3;
         }
         return status;
     }
 
-    public static String getCarFrame(String input) {
+    public static List<String> getCarFrame(String input) {
+
+        List<String> carFrames = new ArrayList<String>();
+        input = input.replaceAll("(1[0-9])\\d{9}", "");
         String str = "";
         Pattern p = Pattern.compile("#?\\d{4}#?");
         Matcher m = p.matcher(input);
-        if (m.find()) {
+        while (m.find()) {
             str = m.group().trim();
+            carFrames.add(str);
         }
-        return str;
+        return carFrames;
     }
 
     public static String html(String content) {
@@ -108,5 +113,30 @@ public class StringHelper {
         html = html.replaceAll(">", "&gt;");
 
         return html;
+    }
+
+    public static Integer getSpec(String input) {
+        int spec = 0;
+        if (regPass(input, "美(版|规|国规格)")||regPass(input, "美规(车)")) {
+            return 1;
+        } else if (regPass(input, "欧(版|规|规车|洲规格)")) {
+            return 2;
+        } else if (regPass(input, "中东(版)?") || regPass(input, "迪拜(版)?")
+                || regPass(input, "迪拜(版)?") || regPass(input, "阿曼(版)?")
+                || regPass(input, "科威特(版)?") || regPass(input, "黎巴嫩(版)?")
+                || regPass(input, "黎巴嫩(版)?") || regPass(input, "巴林(版)?")
+                || regPass(input, "沙特(版)?")) {
+            return 3;
+        } else if (regPass(input, "墨(版|规|西哥版)")) {
+            return 4;
+        } else if (regPass(input, "加(版|规|拿大版|拿大规格)")) {
+            return 5;
+        } else if (regPass(input, "德(版|规|国版|国规格)")) {
+            return 8;
+        } else if (regPass(input, "中(版|规|国版|国规格)")) {
+            return 9;
+        }
+
+        return spec;
     }
 }

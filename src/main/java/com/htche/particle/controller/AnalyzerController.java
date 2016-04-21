@@ -2,6 +2,7 @@ package com.htche.particle.controller;
 
 import com.google.common.base.Strings;
 import com.htche.particle.facade.CityFacade;
+import com.htche.particle.facade.SpecFacade;
 import com.htche.particle.model.AnalyzerInfo;
 import com.htche.particle.model.CityInfo;
 import com.htche.particle.util.AnalyzerHelper;
@@ -27,6 +28,7 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Title: AnalyzerController
@@ -48,6 +50,8 @@ public class AnalyzerController {
 
     @Autowired
     CityFacade cityFacade;
+    @Autowired
+    SpecFacade specFacade;
 
     @RequestMapping("analyzer")
     public ModelAndView analyzer(String input) {
@@ -56,6 +60,8 @@ public class AnalyzerController {
         model.addObject("input", input);
 
         List<CityInfo> cityInfos = cityFacade.getCities();
+
+        Map<Integer, String> speces = specFacade.getSpeces();
 
         List<AnalyzerInfo> analyzerInfos = new ArrayList<AnalyzerInfo>();
 
@@ -72,7 +78,7 @@ public class AnalyzerController {
                 //分析输入一共有多少行
                 String[] inputArr = input.split("\\r\\n");
                 for (String item : inputArr) {
-                    if (item != null && !item.isEmpty() && StringHelper.regPass(item,"1[5|6|7]款?[^\\d]")) {
+                    if (item != null && !item.isEmpty() && StringHelper.regPass(item, "1(5|6|7)款?[^\\d]")) {
                         item = item.trim();
                         if (StringHelper.hasChineseCharacters(item)) {
                             String keywords = item.substring(0, item.length() > _SUBCOUNT ? _SUBCOUNT : item.length());
@@ -100,7 +106,8 @@ public class AnalyzerController {
                             Integer status = StringHelper.getCarStatus(item);
 
                             //匹配车架号
-                            String carFrame = StringHelper.getCarFrame(item);
+                            List<String> carFrames = StringHelper.getCarFrame(item);
+                            if (carFrames.size() == 0) carFrames.add("");
 
                             //匹配城市
                             CityInfo cityInfo = new CityInfo();
@@ -114,18 +121,25 @@ public class AnalyzerController {
                                 }
                             }
 
-                            for (int i = 0; i < hits; i++) {
-                                AnalyzerInfo analyzerInfo = new AnalyzerInfo();
-                                Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
-                                analyzerInfo.setCarTypeId(targetDoc.get("id"));
-                                analyzerInfo.setCarType(targetDoc.get("content"));
-                                analyzerInfo.setMobile(mobile);
-                                analyzerInfo.setPrice(price);
-                                analyzerInfo.setStatus(status);
-                                analyzerInfo.setCarFrame(carFrame);
-                                analyzerInfo.setCity(cityInfo);
-                                analyzerInfos.add(analyzerInfo);
-                                System.out.println("内容:" + targetDoc.toString());
+                            //匹配规格
+                            Integer spec = StringHelper.getSpec(item);
+
+                            for (String carFrame : carFrames) {
+                                for (int i = 0; i < hits; i++) {
+                                    AnalyzerInfo analyzerInfo = new AnalyzerInfo();
+                                    Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
+                                    analyzerInfo.setCarTypeId(targetDoc.get("id"));
+                                    analyzerInfo.setCarType(targetDoc.get("content"));
+                                    analyzerInfo.setMobile(mobile);
+                                    analyzerInfo.setPrice(price);
+                                    analyzerInfo.setStatus(status);
+                                    analyzerInfo.setCity(cityInfo);
+                                    analyzerInfo.setSpec(spec);
+                                    analyzerInfo.setSpecName(speces.get(spec));
+                                    analyzerInfo.setCarFrame(carFrame);
+                                    analyzerInfos.add(analyzerInfo);
+                                    System.out.println("内容:" + targetDoc.toString());
+                                }
                             }
                         }
                     }
