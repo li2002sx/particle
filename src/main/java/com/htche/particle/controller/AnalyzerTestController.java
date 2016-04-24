@@ -41,7 +41,7 @@ public class AnalyzerTestController {
 
     private final String _INDEXPATH = AppConfigHelper.nodeMap.get("index_path");
 
-    private final Integer _SUBCOUNT = 15;
+    private final Integer _SUBCOUNT = Integer.parseInt(AppConfigHelper.nodeMap.get("analyzer_length"));
 
     private final Integer _QUERYCOUNT = 5;
 
@@ -76,7 +76,7 @@ public class AnalyzerTestController {
                             String result = AnalyzerHelper.displayTokens(tokenStream);
 
                             QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
-//                          queryParser.setDefaultOperator(QueryParser.AND_OPERATOR);
+//                            queryParser.setDefaultOperator(QueryParser.AND_OPERATOR);
                             Query query = queryParser.parse(result);     // 搜索Lucene
                             analyzerTestInfo.setKeywords(result);
                             TopDocs topDocs = indexSearcher.search(query, _QUERYCOUNT);      //搜索相似度最高的5条记录

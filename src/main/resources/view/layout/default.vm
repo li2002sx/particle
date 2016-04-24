@@ -53,6 +53,12 @@
                             <a href="/extdict">扩展词</a>
                         </li>
                         <li>
+                            <a href="/outcolor">外饰颜色</a>
+                        </li>
+                        <li>
+                            <a href="/incolor">内饰颜色</a>
+                        </li>
+                        <li>
                             <a href="/analyzertest">粒子分析</a>
                         </li>
 
@@ -76,6 +82,7 @@
 
     <script src="js/bootbox.js"></script>
     <script src="js/jquery-autocomplete.js"></script>
+    <script src="js/json2.js"></script>
 
     #foreach($url in $jsUrls)
     <script type="text/javascript" src="$url"></script>

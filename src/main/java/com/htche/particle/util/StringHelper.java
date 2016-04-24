@@ -90,6 +90,7 @@ public class StringHelper {
 
         List<String> carFrames = new ArrayList<String>();
         input = input.replaceAll("(1[0-9])\\d{9}", "");
+        input = input.replaceAll("(27|30|40|45|46|57)00", "");
         String str = "";
         Pattern p = Pattern.compile("#?\\d{4}#?");
         Matcher m = p.matcher(input);
@@ -117,7 +118,7 @@ public class StringHelper {
 
     public static Integer getSpec(String input) {
         int spec = 0;
-        if (regPass(input, "美(版|规|国规格)")||regPass(input, "美规(车)")) {
+        if (regPass(input, "美(版|规|国规格)") || regPass(input, "美规(车)")) {
             return 1;
         } else if (regPass(input, "欧(版|规|规车|洲规格)")) {
             return 2;

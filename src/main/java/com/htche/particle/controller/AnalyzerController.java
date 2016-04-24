@@ -2,8 +2,11 @@ package com.htche.particle.controller;
 
 import com.google.common.base.Strings;
 import com.htche.particle.facade.CityFacade;
+import com.htche.particle.facade.InColorFacade;
+import com.htche.particle.facade.OutColorFacade;
 import com.htche.particle.facade.SpecFacade;
 import com.htche.particle.model.AnalyzerInfo;
+import com.htche.particle.model.CarTypeInfo;
 import com.htche.particle.model.CityInfo;
 import com.htche.particle.util.AnalyzerHelper;
 import com.htche.particle.util.AppConfigHelper;
@@ -27,6 +30,7 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,14 +48,19 @@ public class AnalyzerController {
 
     private final String _INDEXPATH = AppConfigHelper.nodeMap.get("index_path");
 
-    private final Integer _SUBCOUNT = 15;
+    private final Integer _SUBCOUNT = Integer.parseInt(AppConfigHelper.nodeMap.get("analyzer_length"));
+    ;
 
-    private final Integer _QUERYCOUNT = 1;
+    private final Integer _QUERYCOUNT = 5;
 
     @Autowired
     CityFacade cityFacade;
     @Autowired
     SpecFacade specFacade;
+    @Autowired
+    OutColorFacade outColorFacade;
+    @Autowired
+    InColorFacade inColorFacade;
 
     @RequestMapping("analyzer")
     public ModelAndView analyzer(String input) {
@@ -59,13 +68,17 @@ public class AnalyzerController {
         ModelAndView model = new ModelAndView("custom/analyzer");
         model.addObject("input", input);
 
-        List<CityInfo> cityInfos = cityFacade.getCities();
-
-        Map<Integer, String> speces = specFacade.getSpeces();
-
         List<AnalyzerInfo> analyzerInfos = new ArrayList<AnalyzerInfo>();
 
         if (input != null && !input.isEmpty()) {
+            List<CityInfo> cityInfos = cityFacade.getCities();
+
+            Map<Integer, String> speces = specFacade.getSpeces();
+
+            List<String> outColors = outColorFacade.getOutColors();
+
+            List<String> inColors = inColorFacade.getInColors();
+
 //            input = input.replaceAll(" +","");
             Analyzer analyzer = new IKAnalyzer();
             File indexDir = new File(_INDEXPATH);
@@ -120,26 +133,62 @@ public class AnalyzerController {
                                     }
                                 }
                             }
+                            String outColor = "", inColor = "";
+
+                            int outIndex = -1, index = -1;
+                            Map<Integer, String> outMap = new HashMap<Integer, String>();
+                            //匹配外/内饰颜色
+                            int k = 0;
+                            for (String out : outColors) {
+                                index = item.indexOf(out);
+                                if (index > -1) {
+                                    outMap.put(index, out);
+                                    if (k == 0 || index < outIndex) {
+                                        outIndex = index;
+                                    }
+                                    k++;
+                                }
+                            }
+
+                            if (outMap.size() > 0 && outIndex > -1) {
+                                outColor = outMap.get(outIndex);
+                                String filterOutItem = item.substring(outIndex + 1, item.length() - outIndex - 1);
+                                for (String in : inColors) {
+                                    if (filterOutItem.contains(in)) {
+                                        inColor = in;
+                                        break;
+                                    }
+                                }
+                            }
 
                             //匹配规格
                             Integer spec = StringHelper.getSpec(item);
 
+                            Map<String, String> carTypeMap = new HashMap<String, String>();
+                            for (int i = 0; i < hits; i++) {
+                                AnalyzerInfo analyzerInfo = new AnalyzerInfo();
+                                Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
+                                carTypeMap.put(targetDoc.get("id"), targetDoc.get("content"));
+                                System.out.println("内容:" + targetDoc.toString());
+                            }
+
                             for (String carFrame : carFrames) {
-                                for (int i = 0; i < hits; i++) {
-                                    AnalyzerInfo analyzerInfo = new AnalyzerInfo();
-                                    Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
-                                    analyzerInfo.setCarTypeId(targetDoc.get("id"));
-                                    analyzerInfo.setCarType(targetDoc.get("content"));
-                                    analyzerInfo.setMobile(mobile);
-                                    analyzerInfo.setPrice(price);
-                                    analyzerInfo.setStatus(status);
-                                    analyzerInfo.setCity(cityInfo);
-                                    analyzerInfo.setSpec(spec);
-                                    analyzerInfo.setSpecName(speces.get(spec));
-                                    analyzerInfo.setCarFrame(carFrame);
-                                    analyzerInfos.add(analyzerInfo);
-                                    System.out.println("内容:" + targetDoc.toString());
+                                AnalyzerInfo analyzerInfo = new AnalyzerInfo();
+                                analyzerInfo.setCarTypeMap(carTypeMap);
+                                analyzerInfo.setMobile(mobile);
+                                analyzerInfo.setPrice(price);
+                                analyzerInfo.setStatus(status);
+                                analyzerInfo.setCity(cityInfo);
+                                analyzerInfo.setSpec(spec);
+                                analyzerInfo.setSpecName(speces.get(spec));
+                                analyzerInfo.setCarFrame(carFrame);
+
+                                if (!Strings.isNullOrEmpty(outColor) && !Strings.isNullOrEmpty(inColor)) {
+                                    analyzerInfo.setOutColor(outColor);
+                                    analyzerInfo.setInColor(inColor);
                                 }
+
+                                analyzerInfos.add(analyzerInfo);
                             }
                         }
                     }
@@ -147,8 +196,9 @@ public class AnalyzerController {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
 
+            model.addObject("speces", speces);
+        }
         model.addObject("analyzers", analyzerInfos);
         return model;
     }

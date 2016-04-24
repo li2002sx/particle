@@ -47,15 +47,16 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>序号</th>
-                                                    <th>车型编号</th>
+                                                    <th width="5%">序号</th>
                                                     <th>车型</th>
-                                                    <th>规格</th>
-                                                    <th>手机</th>
-                                                    <th>价格</th>
-                                                    <th>状态</th>
-                                                    <th>车架号</th>
-                                                    <th>城市</th>
+                                                    <th width="8%">规格</th>
+                                                    <th width="7%">外饰</th>
+                                                    <th width="7%">内饰</th>
+                                                    <th width="8%">手机</th>
+                                                    <th width="8%">价格</th>
+                                                    <th width="8%">状态</th>
+                                                    <th width="7%">车架号</th>
+                                                    <th width="6%">城市</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -63,11 +64,36 @@
                                             #foreach($item in $analyzers)
                                                 <tr>
                                                     <td>$i</td>
-                                                    <td>$item.carTypeId</td>
-                                                    <td>$item.carType</td>
-                                                    <td>$item.specName</td>
-                                                    <td>$item.mobile</td>
-                                                    <td>$!item.price万</td>
+                                                    <td>
+                                                    <select class="form-control">
+                                                        #foreach($key in $item.carTypeMap.keySet())
+                                                            <option value="$key">$item.carTypeMap.get($key)</option>
+                                                        #end
+                                                    </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control">
+                                                            #foreach($key in $speces.keySet())
+                                                                <option value="$key"
+                                                                #if($item.spec == $key)
+                                                                    selected = "selected"
+                                                                #end
+                                                                >$speces.get($key)</option>
+                                                            #end
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" value="$!item.outColor" size="2">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" value="$!item.inColor" size="1">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" value="$!item.mobile" size="6">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" value="$!item.price" size="1">
+                                                    </td>
                                                     <td>
                                                         <select class="form-control">
                                                             <option value="0">无</option>
@@ -88,7 +114,9 @@
                                                             >期货</option>
                                                         </select>
                                                     </td>
-                                                    <td>$!item.carFrame</td>
+                                                    <td>
+                                                        <input class="form-control" value="$!item.carFrame" size="1">
+                                                    </td>
                                                     <td>$!item.city.cityName</td>
                                                 </tr>
                                                 #set($i=$i+1)
@@ -101,7 +129,7 @@
                                 <!-- /.panel-body -->
                             </div>
                             <!-- /.panel -->
-                                <button type="button" class="btn btn-primary" id="btn_save">入库</button>
+                                <button type="button" class="btn btn-primary" id="btn_save" data-loading-text="Loading...">入库</button>
                         </div>
                     </div>
                 </div>
