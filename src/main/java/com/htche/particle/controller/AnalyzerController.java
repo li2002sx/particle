@@ -49,7 +49,6 @@ public class AnalyzerController {
     private final String _INDEXPATH = AppConfigHelper.nodeMap.get("index_path");
 
     private final Integer _SUBCOUNT = Integer.parseInt(AppConfigHelper.nodeMap.get("analyzer_length"));
-    ;
 
     private final Integer _QUERYCOUNT = 5;
 
@@ -150,15 +149,27 @@ public class AnalyzerController {
                                 }
                             }
 
+                            Map<Integer, String> inMap = new HashMap<Integer, String>();
                             if (outMap.size() > 0 && outIndex > -1) {
                                 outColor = outMap.get(outIndex);
                                 String filterOutItem = item.substring(outIndex + 1, item.length() - outIndex - 1);
+                                outIndex = -1;
+                                index = -1;
+                                k = 0;
                                 for (String in : inColors) {
-                                    if (filterOutItem.contains(in)) {
-                                        inColor = in;
-                                        break;
+                                    index = filterOutItem.indexOf(in);
+                                    if (index > -1) {
+                                        inMap.put(index, in);
+                                        if (k == 0 || index < outIndex) {
+                                            outIndex = index;
+                                        }
+                                        k++;
                                     }
                                 }
+                            }
+
+                            if (inMap.size() > 0 && outIndex > -1) {
+                                inColor = inMap.get(outIndex);
                             }
 
                             //匹配规格
