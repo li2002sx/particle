@@ -177,7 +177,6 @@ public class AnalyzerController {
 
                             Map<String, String> carTypeMap = new HashMap<String, String>();
                             for (int i = 0; i < hits; i++) {
-                                AnalyzerInfo analyzerInfo = new AnalyzerInfo();
                                 Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
                                 carTypeMap.put(targetDoc.get("id"), targetDoc.get("content"));
                                 System.out.println("内容:" + targetDoc.toString());
@@ -185,6 +184,8 @@ public class AnalyzerController {
 
                             for (String carFrame : carFrames) {
                                 AnalyzerInfo analyzerInfo = new AnalyzerInfo();
+                                analyzerInfo.setKeywords(keywords);
+                                analyzerInfo.setIkwords(result);
                                 analyzerInfo.setCarTypeMap(carTypeMap);
                                 analyzerInfo.setMobile(mobile);
                                 analyzerInfo.setPrice(price);

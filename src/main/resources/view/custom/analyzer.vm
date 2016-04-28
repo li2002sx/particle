@@ -62,6 +62,10 @@
                                             <tbody>
                                             #set($i=1)
                                             #foreach($item in $analyzers)
+                                                <tr class="info">
+                                                    <td></td>
+                                                    <td colspan="9">$item.keywords ||| $item.ikwords</td>
+                                                </tr>
                                                 <tr>
                                                     <td>$i</td>
                                                     <td>

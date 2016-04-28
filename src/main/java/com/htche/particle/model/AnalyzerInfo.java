@@ -32,4 +32,8 @@ public class AnalyzerInfo {
     private String carFrame;
 
     private CityInfo city;
+
+    private String keywords;
+
+    private String ikwords;
 }
