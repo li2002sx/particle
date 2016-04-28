@@ -76,11 +76,11 @@ public class StringHelper {
                 || regPass(input, "手续齐(全)?") || regPass(input, "拆箱")) {
             return 1;
         } else if (input.contains("打放税") || input.contains("马上齐")
-                || input.contains("到港") || regPass(input, "\\d{1,2}个工作日")) {
+                || regPass(input, "\\d{1,2}个工作日")) {
             return 2;
         } else if (input.contains("期货") || input.contains("在途")
                 || input.contains("发船") || regPass(input, "\\d{1,2}月d{1,2}日")
-                || input.contains("交车")) {
+                || input.contains("交车") || input.contains("到港")) {
             return 3;
         }
         return status;
