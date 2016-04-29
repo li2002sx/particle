@@ -16,10 +16,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +47,7 @@ public class AnalyzerController {
 
     private final Integer _SUBCOUNT = Integer.parseInt(AppConfigHelper.nodeMap.get("analyzer_length"));
 
-    private final Integer _QUERYCOUNT = 5;
+    private final Integer _QUERYCOUNT = Integer.parseInt(AppConfigHelper.nodeMap.get("analyzer_count"));;
 
     @Autowired
     CityFacade cityFacade;

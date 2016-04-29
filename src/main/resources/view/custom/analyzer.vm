@@ -62,12 +62,13 @@
                                             <tbody>
                                             #set($i=1)
                                             #foreach($item in $analyzers)
-                                                <tr class="info">
-                                                    <td></td>
-                                                    <td colspan="9">$item.keywords ||| $item.ikwords</td>
+                                                <tr class="success">
+                                                    <td>$i</td>
+                                                    <td colspan="2">分析词汇：$item.keywords</td>
+                                                    <td colspan="7">分词结果：$item.ikwords</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>$i</td>
+                                                    <td></td>
                                                     <td>
                                                     <select class="form-control">
                                                         #foreach($key in $item.carTypeMap.keySet())

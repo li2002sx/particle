@@ -24,7 +24,9 @@ public class LuceneIndex {
         Analyzer analyzer = new IKAnalyzer();
         TextField postIdField = new TextField("id", id, Field.Store.YES);  // 不要用StringField
         TextField postContentField = new TextField("content", name, Field.Store.YES);
-
+        if (name.indexOf("16") > -1) {
+            postContentField.setBoost(1.5f);
+        }
         Document doc = new Document();
         doc.add(postIdField);
         doc.add(postContentField);
