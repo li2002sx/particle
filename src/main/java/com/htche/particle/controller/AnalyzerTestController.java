@@ -66,7 +66,7 @@ public class AnalyzerTestController {
                 //分析输入一共有多少行
                 String[] inputArr = input.split("\\r\\n");
                 for (String item : inputArr) {
-                        if (item != null && !item.isEmpty() &&StringHelper.regPass(item, "1(5|6|7)款?[^\\d]")){
+                    if (item != null && !item.isEmpty() && StringHelper.regPass(item, "1(4|5|6|7)款?[^\\d]")) {
                         AnalyzerTestInfo analyzerTestInfo = new AnalyzerTestInfo();
                         item = item.trim();
                         if (StringHelper.hasChineseCharacters(item)) {
@@ -74,6 +74,10 @@ public class AnalyzerTestController {
                             String analyzeChinese = AnalyzerHelper.analyzeChinese(keywords, true);
                             TokenStream tokenStream = AnalyzerHelper.convertSynonym(analyzeChinese);
                             String result = AnalyzerHelper.displayTokens(tokenStream);
+
+                            if (item.toLowerCase().contains("hse")) {
+                                result = String.format("%s HSE", result);
+                            }
 
                             QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
 //                            queryParser.setDefaultOperator(QueryParser.AND_OPERATOR);

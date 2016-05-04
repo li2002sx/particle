@@ -26,10 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Title: AnalyzerController
@@ -47,7 +44,8 @@ public class AnalyzerController {
 
     private final Integer _SUBCOUNT = Integer.parseInt(AppConfigHelper.nodeMap.get("analyzer_length"));
 
-    private final Integer _QUERYCOUNT = Integer.parseInt(AppConfigHelper.nodeMap.get("analyzer_count"));;
+    private final Integer _QUERYCOUNT = Integer.parseInt(AppConfigHelper.nodeMap.get("analyzer_count"));
+    ;
 
     @Autowired
     CityFacade cityFacade;
@@ -87,22 +85,9 @@ public class AnalyzerController {
                 //分析输入一共有多少行
                 String[] inputArr = input.split("\\r\\n");
                 for (String item : inputArr) {
-                    if (item != null && !item.isEmpty() && StringHelper.regPass(item, "1(5|6|7)款?[^\\d]")) {
+                    if (item != null && !item.isEmpty() && StringHelper.regPass(item, "1(4|5|6|7)款?[^\\d]")) {
                         item = item.trim();
                         if (StringHelper.hasChineseCharacters(item)) {
-                            String keywords = item.substring(0, item.length() > _SUBCOUNT ? _SUBCOUNT : item.length());
-                            String analyzeChinese = AnalyzerHelper.analyzeChinese(keywords, true);
-                            TokenStream tokenStream = AnalyzerHelper.convertSynonym(analyzeChinese);
-                            String result = AnalyzerHelper.displayTokens(tokenStream);
-
-                            QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
-//            queryParser.setDefaultOperator(QueryParser.AND_OPERATOR);
-                            Query query = queryParser.parse(result);     // 搜索Lucene
-                            TopDocs topDocs = indexSearcher.search(query, _QUERYCOUNT);      //搜索相似度最高的5条记录
-                            System.out.println("命中:" + topDocs.totalHits);
-                            ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                            int hits = topDocs.totalHits;
-                            if (hits > _QUERYCOUNT) hits = _QUERYCOUNT;
 
                             //匹配手机
                             String mobile = StringHelper.getMobile(item);
@@ -172,7 +157,29 @@ public class AnalyzerController {
                             //匹配规格
                             Integer spec = StringHelper.getSpec(item);
 
-                            Map<String, String> carTypeMap = new HashMap<String, String>();
+                            String keywords = item.substring(0, item.length() > _SUBCOUNT ? _SUBCOUNT : item.length());
+                            keywords = keywords.replace(outColor,"");
+                            keywords = keywords.replace(inColor,"");
+                            keywords = keywords.replace("标配","");
+                            String analyzeChinese = AnalyzerHelper.analyzeChinese(keywords, true);
+                            TokenStream tokenStream = AnalyzerHelper.convertSynonym(analyzeChinese);
+                            String result = AnalyzerHelper.displayTokens(tokenStream);
+
+                            if (item.toLowerCase().contains("hse")) {
+                                result = String.format("%s HSE", result);
+                            }
+
+                            QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
+//                            queryParser.setDefaultOperator(QueryParser.AND_OPERATOR);
+                            Query query = queryParser.parse(result);     // 搜索Lucene
+                            TopDocs topDocs = indexSearcher.search(query, _QUERYCOUNT);      //搜索相似度最高的5条记录
+                            System.out.println("命中:" + topDocs.totalHits);
+                            ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                            int hits = topDocs.totalHits;
+                            if (hits > _QUERYCOUNT) hits = _QUERYCOUNT;
+
+
+                            Map<String, String> carTypeMap = new LinkedHashMap<>();
                             for (int i = 0; i < hits; i++) {
                                 Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
                                 carTypeMap.put(targetDoc.get("id"), targetDoc.get("content"));
