@@ -134,7 +134,7 @@ public class AnalyzerController {
                             Map<Integer, String> inMap = new HashMap<Integer, String>();
                             if (outMap.size() > 0 && outIndex > -1) {
                                 outColor = outMap.get(outIndex);
-                                String filterOutItem = item.substring(outIndex + 1, item.length() - outIndex - 1);
+                                String filterOutItem = item.substring(outIndex + 1);
                                 outIndex = -1;
                                 index = -1;
                                 k = 0;
@@ -167,6 +167,10 @@ public class AnalyzerController {
 
                             if (item.toLowerCase().contains("hse")) {
                                 result = String.format("%s HSE", result);
+                            }if (item.toLowerCase().contains("vogue")) {
+                                result = String.format("%s VOGUE", result);
+                            }if (item.toLowerCase().contains("加长")) {
+                                result = String.format("%s 加长", result);
                             }
 
                             QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
