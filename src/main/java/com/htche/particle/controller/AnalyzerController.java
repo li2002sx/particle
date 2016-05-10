@@ -158,19 +158,34 @@ public class AnalyzerController {
                             Integer spec = StringHelper.getSpec(item);
 
                             String keywords = item.substring(0, item.length() > _SUBCOUNT ? _SUBCOUNT : item.length());
-                            keywords = keywords.replace(outColor,"");
-                            keywords = keywords.replace(inColor,"");
-                            keywords = keywords.replace("标配","");
+                            keywords = keywords.replace(outColor, "");
+                            keywords = keywords.replace(inColor, "");
+                            keywords = keywords.replace("标配", "");
                             String analyzeChinese = AnalyzerHelper.analyzeChinese(keywords, true);
                             TokenStream tokenStream = AnalyzerHelper.convertSynonym(analyzeChinese);
                             String result = AnalyzerHelper.displayTokens(tokenStream);
 
-                            if (item.toLowerCase().contains("hse")) {
+                            String itemLower = item.toLowerCase();
+
+                            if (itemLower.contains("柴油") && itemLower.contains("hse")) {
+                                result = result.replace("hse","柴油 HSE");
+                            }else if (itemLower.contains("hse")) {
                                 result = String.format("%s HSE", result);
-                            }if (item.toLowerCase().contains("vogue")) {
+                            }
+                            if (itemLower.contains("vogue")) {
                                 result = String.format("%s VOGUE", result);
-                            }if (item.toLowerCase().contains("加长")) {
+                            }
+                            if (itemLower.contains("加长")) {
                                 result = String.format("%s 加长", result);
+                            }
+                            if (!itemLower.contains("amg")) {
+                                result = String.format("%s -AMG", result);
+                            }
+                            if (!itemLower.contains("hse")) {
+                                result = String.format("%s -HSE", result);
+                            }
+                            if (!itemLower.contains("vogue")) {
+                                result = String.format("%s -VOGUE", result);
                             }
 
                             QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
@@ -183,7 +198,7 @@ public class AnalyzerController {
                             if (hits > _QUERYCOUNT) hits = _QUERYCOUNT;
 
 
-                            Map<String, String> carTypeMap = new LinkedHashMap<>();
+                            Map<String, String> carTypeMap = new LinkedHashMap<String, String>();
                             for (int i = 0; i < hits; i++) {
                                 Document targetDoc = indexSearcher.doc(scoreDocs[i].doc);
                                 carTypeMap.put(targetDoc.get("id"), targetDoc.get("content"));

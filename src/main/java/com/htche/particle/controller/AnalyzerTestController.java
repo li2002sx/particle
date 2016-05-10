@@ -75,8 +75,27 @@ public class AnalyzerTestController {
                             TokenStream tokenStream = AnalyzerHelper.convertSynonym(analyzeChinese);
                             String result = AnalyzerHelper.displayTokens(tokenStream);
 
-                            if (item.toLowerCase().contains("hse")) {
+                            String itemLower = item.toLowerCase();
+
+                            if (itemLower.contains("柴油") && itemLower.contains("hse")) {
+                                result = result.replace("hse","柴油 HSE");
+                            }else if (itemLower.contains("hse")) {
                                 result = String.format("%s HSE", result);
+                            }
+                            if (itemLower.contains("vogue")) {
+                                result = String.format("%s VOGUE", result);
+                            }
+                            if (itemLower.contains("加长")) {
+                                result = String.format("%s 加长", result);
+                            }
+                            if(!itemLower.contains("amg")){
+                                result =  String.format("%s -AMG", result);
+                            }
+                            if (!itemLower.contains("hse")) {
+                                result = String.format("%s -HSE", result);
+                            }
+                            if (!itemLower.contains("vogue")) {
+                                result = String.format("%s -VOGUE", result);
                             }
 
                             QueryParser queryParser = new QueryParser("content", analyzer);         //使用QueryParser查询分析器构造Query对象
